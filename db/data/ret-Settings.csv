@@ -1,0 +1,6 @@
+code,value,description
+TAX_RATE_PCT,18,GST rate applied to repair charges (%)
+AUTO_APPROVAL_LIMIT,5000,Charges up to this total (INR) are approved automatically
+CURRENCY,INR,Currency of all amounts
+MIN_DAMAGE_PHOTOS,1,Photos needed before a damage can be confirmed
+MAX_PHOTO_MB,10,Largest photo that can be uploaded (MB)

@@ -1,0 +1,41 @@
+/* Shared look for the landing, login switch, dashboard and yard pages */
+:root {
+    --slate: #1F2A37;
+    --slate-2: #2E3B4E;
+    --amber: #F2A900;
+    --amber-soft: #FCEBB6;
+    --bg: #F4F5F7;
+    --surface: #FFFFFF;
+    --ink: #1B2433;
+    --muted: #5F6B7A;
+    --line: #E1E4EA;
+    --good: #0ca30c;
+    --warning: #fab219;
+    --serious: #ec835a;
+    --critical: #d03b3b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "72", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+}
+
+a {
+    color: var(--slate-2);
+}
+
+.chip {
+    display: inline-block;
+    border-radius: 99px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--amber-soft);
+    color: #6B4D00;
+}

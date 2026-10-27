@@ -1,0 +1,9 @@
+ID,conditionLog_ID,damageType,damageDescription,severity,repairEstimate,customerLiable,liabilityNote,damageStatus
+61000000-0000-0000-0000-000000000001,60000000-0000-0000-0000-000000000003,Dent,Front bucket dented near the cutting edge,Moderate,12000,true,,Closed
+61000000-0000-0000-0000-000000000002,60000000-0000-0000-0000-000000000006,Oil Leak,Engine oil leaking from sump gasket,Major,18000,true,,Repaired
+61000000-0000-0000-0000-000000000003,60000000-0000-0000-0000-000000000009,Scratch,Deep scratch on rear counterweight,Minor,1500,true,,Reported
+61000000-0000-0000-0000-000000000004,60000000-0000-0000-0000-000000000018,Hydraulic Leak,"Boom cylinder seal failure, hydraulic oil loss",Critical,65000,true,,Closed
+61000000-0000-0000-0000-000000000005,60000000-0000-0000-0000-000000000011,Scratch,Old scratch on mixer drum,Minor,1500,false,Recorded at check-out (pre-existing),Waived
+61000000-0000-0000-0000-000000000006,60000000-0000-0000-0000-000000000019,Track Damage,Two track links bent on left side,Major,80000,false,Found outside a rental (internal),In Repair
+61000000-0000-0000-0000-000000000008,60000000-0000-0000-0000-000000000010,Broken Part,"Control panel cover cracked, gauge glass broken",Moderate,7000,true,,Confirmed
+61000000-0000-0000-0000-000000000009,60000000-0000-0000-0000-000000000003,Scratch,Paint scratched along the boom,Minor,1800,true,,Repaired

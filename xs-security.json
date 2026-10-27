@@ -1,0 +1,150 @@
+{
+  "xsappname": "rental-equipment-tracker",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.YardWorker",
+      "description": "Scan, inspect and transfer equipment (no price data)"
+    },
+    {
+      "name": "$XSAPPNAME.Dispatcher",
+      "description": "Check out and return rentals, override with reason"
+    },
+    {
+      "name": "$XSAPPNAME.Technician",
+      "description": "Repairs and release from quarantine"
+    },
+    {
+      "name": "$XSAPPNAME.BillingClerk",
+      "description": "Approve and dispute repair charges"
+    },
+    {
+      "name": "$XSAPPNAME.Manager",
+      "description": "All approvals, dashboards and overrides"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Configuration and user management"
+    },
+    {
+      "name": "$XSAPPNAME.Auditor",
+      "description": "Read-only access"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "YardWorker",
+      "description": "Yard worker: scan, inspect, transfer",
+      "scope-references": [
+        "$XSAPPNAME.YardWorker"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Dispatcher",
+      "description": "Dispatcher: check-out, return, override with reason",
+      "scope-references": [
+        "$XSAPPNAME.Dispatcher"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Technician",
+      "description": "Technician: repairs, release quarantine",
+      "scope-references": [
+        "$XSAPPNAME.Technician"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "BillingClerk",
+      "description": "Billing clerk: approve and dispute charges",
+      "scope-references": [
+        "$XSAPPNAME.BillingClerk"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Manager",
+      "description": "Manager: all approvals, dashboards, overrides",
+      "scope-references": [
+        "$XSAPPNAME.Manager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Admin",
+      "description": "Administrator: configuration, user management",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Auditor",
+      "description": "Auditor: read-only",
+      "scope-references": [
+        "$XSAPPNAME.Auditor"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "RET_YardWorker",
+      "description": "Rental Equipment Tracker - yard workers",
+      "role-template-references": [
+        "$XSAPPNAME.YardWorker"
+      ]
+    },
+    {
+      "name": "RET_Dispatcher",
+      "description": "Rental Equipment Tracker - dispatchers",
+      "role-template-references": [
+        "$XSAPPNAME.Dispatcher"
+      ]
+    },
+    {
+      "name": "RET_Technician",
+      "description": "Rental Equipment Tracker - workshop technicians",
+      "role-template-references": [
+        "$XSAPPNAME.Technician"
+      ]
+    },
+    {
+      "name": "RET_BillingClerk",
+      "description": "Rental Equipment Tracker - billing clerks",
+      "role-template-references": [
+        "$XSAPPNAME.BillingClerk"
+      ]
+    },
+    {
+      "name": "RET_Manager",
+      "description": "Rental Equipment Tracker - managers",
+      "role-template-references": [
+        "$XSAPPNAME.Manager"
+      ]
+    },
+    {
+      "name": "RET_Admin",
+      "description": "Rental Equipment Tracker - administrators",
+      "role-template-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    },
+    {
+      "name": "RET_Auditor",
+      "description": "Rental Equipment Tracker - auditors (read-only)",
+      "role-template-references": [
+        "$XSAPPNAME.Auditor"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "redirect-uris": [
+      "https://*.cfapps.us10-001.hana.ondemand.com/**",
+      "https://*.hana.ondemand.com/**"
+    ]
+  }
+}

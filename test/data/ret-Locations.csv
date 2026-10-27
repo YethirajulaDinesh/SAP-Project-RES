@@ -1,0 +1,6 @@
+ID,locationName,locationType,address,city,latitude,longitude
+10000000-0000-0000-0000-000000000001,Hyderabad Central Yard,Yard,"Plot 14, IDA Uppal",Hyderabad,17.4006,78.559
+10000000-0000-0000-0000-000000000002,Bengaluru Depot,Depot,"KIADB Industrial Area, Peenya",Bengaluru,13.0285,77.5197
+10000000-0000-0000-0000-000000000003,Chennai Workshop,Workshop,"SIDCO Estate, Guindy",Chennai,13.01,80.212
+10000000-0000-0000-0000-000000000004,Pune Warehouse,Warehouse,Chakan MIDC Phase II,Pune,18.7597,73.861
+10000000-0000-0000-0000-000000000005,Mumbai Port Yard,Yard,"JNPT Road, Nhava Sheva",Navi Mumbai,18.9499,72.9512

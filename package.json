@@ -1,0 +1,149 @@
+{
+  "name": "rental-equipment-tracker",
+  "version": "1.0.0",
+  "description": "Rental Equipment Tracking & Condition Logging with Automated Repair Billing (SAP CAP + Fiori + SAP HANA)",
+  "private": true,
+  "dependencies": {
+    "@cap-js/hana": "^3",
+    "@sap/cds": "^10",
+    "@sap/xssec": "^4",
+    "cloudinary": "^2.11.0",
+    "dotenv": "^18.0.8"
+  },
+  "devDependencies": {
+    "@cap-js/cds-test": "^1",
+    "@cap-js/sqlite": "^3",
+    "@sap/cds-dk": "^10",
+    "cds-plugin-ui5": "^0.17.0",
+    "jest": "^30"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch --open landing/index.html",
+    "hybrid": "cds watch --profile hybrid",
+    "deploy:hana": "cds deploy --to hana:rental-equipment-tracker-db",
+    "test": "jest",
+    "sample-data": "node scripts/makeSampleData.js",
+    "watch-customers": "cds watch --open customers/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-rentals": "cds watch --open rentals/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-equipment": "cds watch --open equipment/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-locations": "cds watch --open locations/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-maintenance": "cds watch --open maintenance/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-inspections": "cds watch --open inspections/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-damages": "cds watch --open damages/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-repairbills": "cds watch --open repairbills/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-catalogue": "cds watch --open catalogue/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-settings": "cds watch --open settings/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-integration": "cds watch --open integration/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-auditlog": "cds watch --open auditlog/webapp/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "build:ui": "node scripts/copyUi.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 60000,
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ]
+  },
+  "cds": {
+    "server": {
+      "body_parser": {
+        "limit": "15mb"
+      }
+    },
+    "requires": {
+      "[development]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "yard@rental.com": {
+              "password": "yard",
+              "roles": [
+                "YardWorker"
+              ]
+            },
+            "dispatch@rental.com": {
+              "password": "dispatch",
+              "roles": [
+                "Dispatcher"
+              ]
+            },
+            "tech@rental.com": {
+              "password": "tech",
+              "roles": [
+                "Technician"
+              ]
+            },
+            "billing@rental.com": {
+              "password": "billing",
+              "roles": [
+                "BillingClerk"
+              ]
+            },
+            "manager@rental.com": {
+              "password": "manager",
+              "roles": [
+                "Manager"
+              ]
+            },
+            "admin@rental.com": {
+              "password": "admin",
+              "roles": [
+                "Admin"
+              ]
+            },
+            "auditor@rental.com": {
+              "password": "auditor",
+              "roles": [
+                "Auditor"
+              ]
+            }
+          }
+        }
+      },
+      "[hybrid]": {
+        "db": "hana"
+      },
+      "[production]": {
+        "db": "hana",
+        "auth": "xsuaa"
+      },
+      "HANA_S4": {
+        "kind": "rest",
+        "simulate": true,
+        "credentials": {
+          "destination": "HANA_DEV",
+          "path": "/sap/opu/odata/sap"
+        },
+        "[qas]": {
+          "credentials": {
+            "destination": "HANA_QAS"
+          }
+        },
+        "[production]": {
+          "credentials": {
+            "destination": "HANA_PROD"
+          }
+        }
+      },
+      "html5-repo": true
+    }
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/customers",
+    "app/rentals",
+    "app/equipment",
+    "app/locations",
+    "app/maintenance",
+    "app/inspections",
+    "app/damages",
+    "app/repairbills",
+    "app/catalogue",
+    "app/settings",
+    "app/integration",
+    "app/auditlog"
+  ]
+}

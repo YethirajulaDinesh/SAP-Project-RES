@@ -1,0 +1,6 @@
+ID,entity,entityKey,action,userId,timestamp,details
+a0000000-0000-0000-0000-000000000001,Rentals,40000000-0000-0000-0000-000000000003,RETURN,dispatch@rental.com,2026-10-22T15:30:00Z,"{""lateDays"":2}"
+a0000000-0000-0000-0000-000000000002,ConditionLogs,60000000-0000-0000-0000-000000000010,INSPECTION,yard@rental.com,2026-10-22T16:20:00Z,"{""type"":""Check-In"",""grade"":""C"",""damages"":1}"
+a0000000-0000-0000-0000-000000000003,DamageRecords,61000000-0000-0000-0000-000000000008,CONFIRM,tech@rental.com,2026-10-23T09:15:00Z,{}
+a0000000-0000-0000-0000-000000000004,RepairBills,70000000-0000-0000-0000-000000000002,STATUS_DISPUTED,manager@rental.com,2026-09-15T10:20:00Z,"{""reason"":""Customer claims the leak existed before the rental""}"
+a0000000-0000-0000-0000-000000000005,Equipment,30000000-0000-0000-0000-000000000019,TRANSFER,dispatch@rental.com,2026-09-20T08:00:00Z,"{""reason"":""Port expansion project""}"

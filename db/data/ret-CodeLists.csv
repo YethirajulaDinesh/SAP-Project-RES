@@ -1,0 +1,85 @@
+list,code,sortOrder
+RentalStatus,Booked,1
+RentalStatus,Checked Out,2
+RentalStatus,Returned,3
+RentalStatus,Closed,4
+RentalStatus,Cancelled,5
+ItemStatus,Reserved,1
+ItemStatus,Checked Out,2
+ItemStatus,Returned,3
+ItemStatus,Cancelled,4
+EquipmentStatus,Available,1
+EquipmentStatus,Rented Out,2
+EquipmentStatus,Under Inspection,3
+EquipmentStatus,Damaged,4
+EquipmentStatus,In Maintenance,5
+EquipmentStatus,Quarantined,6
+EquipmentStatus,Retired,7
+EquipmentType,Excavator,1
+EquipmentType,Forklift,2
+EquipmentType,Crane,3
+EquipmentType,Generator,4
+EquipmentType,Compressor,5
+EquipmentType,Aerial Lift,6
+EquipmentType,Roller,7
+EquipmentType,Concrete Mixer,8
+EquipmentType,Welding,9
+EquipmentType,Loader,10
+EquipmentType,Dumper,11
+EquipmentType,Lighting,12
+EquipmentType,Pump,13
+EquipmentType,Telehandler,14
+LocationType,Yard,1
+LocationType,Depot,2
+LocationType,Warehouse,3
+LocationType,Workshop,4
+LocationType,Customer Site,5
+MaintenanceType,Preventive,1
+MaintenanceType,Corrective,2
+MaintenanceType,Repair,3
+MaintenanceType,Inspection,4
+MaintenanceType,Calibration,5
+MaintenanceStatus,Scheduled,1
+MaintenanceStatus,In Progress,2
+MaintenanceStatus,Completed,3
+MaintenanceStatus,Cancelled,4
+InspectionType,Check-Out,1
+InspectionType,Check-In,2
+InspectionType,Periodic,3
+InspectionType,Post-Repair,4
+ConditionGrade,A,1
+ConditionGrade,B,2
+ConditionGrade,C,3
+ConditionGrade,D,4
+Severity,Minor,1
+Severity,Moderate,2
+Severity,Major,3
+Severity,Critical,4
+DamageType,Scratch,1
+DamageType,Dent,2
+DamageType,Crack,3
+DamageType,Broken Part,4
+DamageType,Missing Part,5
+DamageType,Hydraulic Leak,6
+DamageType,Oil Leak,7
+DamageType,Electrical Fault,8
+DamageType,Tyre Damage,9
+DamageType,Track Damage,10
+DamageType,Engine Fault,11
+DamageType,Glass Damage,12
+DamageStatus,Reported,1
+DamageStatus,Confirmed,2
+DamageStatus,Billed,3
+DamageStatus,In Repair,4
+DamageStatus,Repaired,5
+DamageStatus,Closed,6
+DamageStatus,Waived,7
+BillingStatus,Pending Approval,1
+BillingStatus,Approved,2
+BillingStatus,Posted,3
+BillingStatus,Billed,4
+BillingStatus,Disputed,5
+BillingStatus,Rejected,6
+OutboxStatus,Pending,1
+OutboxStatus,Sent,2
+OutboxStatus,Failed,3

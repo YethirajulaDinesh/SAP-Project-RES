@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choose a test login</title>
+    <link rel="stylesheet" href="/theme/ret-theme.css">
+    <style>
+        .top {
+            background: var(--slate);
+            border-bottom: 4px solid var(--amber);
+            padding: 36px 20px;
+            text-align: center;
+            color: var(--amber);
+            font: 700 26px "Segoe UI", system-ui, sans-serif
+        }
+
+        .box {
+            max-width: 560px;
+            margin: 30px auto;
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 26px;
+            border-top: 4px solid var(--amber);
+            box-shadow: 0 2px 12px rgba(31, 42, 55, .1)
+        }
+
+        h2 {
+            margin: 0 0 6px;
+            color: var(--slate)
+        }
+
+        a.u {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+            padding: 12px 16px;
+            border: 1px solid #D5DAE3;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--slate)
+        }
+
+        a.u:hover,
+        a.u:focus-visible {
+            background: #FFF7E0;
+            border-color: var(--amber)
+        }
+
+        a.u small {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 2px
+        }
+
+        a.u span.role {
+            background: var(--slate);
+            color: #fff;
+            border-radius: 99px;
+            padding: 3px 12px;
+            font-size: 12px;
+            white-space: nowrap
+        }
+
+        .foot {
+            display: block;
+            margin-top: 18px;
+            color: var(--muted)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top">🚜 Rental Equipment Tracker</div>
+    <div class="box">
+        <h2>Choose a test login</h2>
+        <p>Pick one of the seven roles. You can switch again at any time.</p>
+        <div id="list"></div>
+        <small class="foot">Local testing only. On SAP BTP the real XSUAA sign-in is used.</small>
+    </div>
+    <script>
+        const ABOUT = {
+            YardWorker: ['Yard Worker', 'Scan, inspect, transfer (no prices)'],
+            Dispatcher: ['Dispatcher', 'Check-out, return, override with reason'],
+            Technician: ['Technician', 'Repairs, release quarantine'],
+            BillingClerk: ['Billing Clerk', 'Approve and dispute charges'],
+            Manager: ['Manager', 'All approvals, dashboards, overrides'],
+            Admin: ['Admin', 'Configuration, user management'],
+            Auditor: ['Auditor', 'Read-only access to everything']
+        };
+        fetch('/dev/users').then(r => r.json()).then(list => {
+            const el = document.getElementById('list');
+            list.forEach(u => {
+                const role = u.roles[0];
+                const a = document.createElement('a'); a.className = 'u';
+                a.href = '/dev/login?user=' + encodeURIComponent(u.id) + '&next=' +
+                    encodeURIComponent(role === 'YardWorker' ? '/yard/index.html' : '/landing/index.html');
+                const left = document.createElement('div');
+                const b = document.createElement('b'); b.textContent = u.id;
+                const s = document.createElement('small'); s.textContent = (ABOUT[role] || [])[1] || '';
+                left.append(b, s);
+                const r = document.createElement('span'); r.className = 'role';
+                r.textContent = u.roles.map(x => (ABOUT[x] || [x])[0]).join(' / ');
+                a.append(left, r); el.appendChild(a);
+            });
+        }).catch(() => { document.getElementById('list').textContent = 'Test logins are not available here.'; });
+    </script>
+    <script src="/shared/session-bar.js"></script>
+</body>
+
+</html>

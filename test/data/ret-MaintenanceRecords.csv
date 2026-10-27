@@ -1,0 +1,16 @@
+ID,equipment_ID,maintenanceType,maintenanceDate,description,serviceProvider,cost,nextMaintenanceDate,status
+50000000-0000-0000-0000-000000000001,30000000-0000-0000-0000-000000000002,Preventive,2026-01-15,"500-hour service, filters and hydraulic oil",CAT Service Centre Hyderabad,8500,2026-07-15,Completed
+50000000-0000-0000-0000-000000000002,30000000-0000-0000-0000-000000000005,Preventive,2026-02-10,Annual service and load test,Escorts Service Bengaluru,12000,2026-08-10,Completed
+50000000-0000-0000-0000-000000000003,30000000-0000-0000-0000-000000000006,Repair,2026-07-28,Repair Hydraulic Leak (Critical): boom cylinder resealed,Tata Hitachi Workshop,58000,2027-01-28,Completed
+50000000-0000-0000-0000-000000000004,30000000-0000-0000-0000-000000000007,Repair,2026-09-10,Repair Oil Leak (Major): sump gasket replaced,Kirloskar Authorised Service,15500,2027-03-10,Completed
+50000000-0000-0000-0000-000000000005,30000000-0000-0000-0000-000000000001,Repair,2026-08-20,Repair Dent (Moderate) and boom paint,JCB Care Hyderabad,10800,2027-02-20,Completed
+50000000-0000-0000-0000-000000000006,30000000-0000-0000-0000-000000000012,Preventive,2026-03-18,Drum bearing grease and engine service,Volvo CE Chennai,9500,2026-09-18,Completed
+50000000-0000-0000-0000-000000000007,30000000-0000-0000-0000-000000000016,Preventive,2026-04-22,1000-hour service,Volvo CE Mumbai,14000,2026-10-22,Completed
+50000000-0000-0000-0000-000000000008,30000000-0000-0000-0000-000000000010,Calibration,2026-05-05,Load sensor and tilt alarm calibration,JLG Service India,3500,2026-11-05,Completed
+50000000-0000-0000-0000-000000000009,30000000-0000-0000-0000-000000000003,Preventive,2026-06-12,"Engine oil, filters, brake check",Toyota Material Handling,2400,2026-12-12,Completed
+50000000-0000-0000-0000-000000000010,30000000-0000-0000-0000-000000000019,Preventive,2026-08-08,Annual service,Manitou Service Pune,6500,2027-02-08,Completed
+50000000-0000-0000-0000-000000000011,30000000-0000-0000-0000-000000000002,Preventive,2026-11-03,1000-hour service,CAT Service Centre Hyderabad,0,,Scheduled
+50000000-0000-0000-0000-000000000012,30000000-0000-0000-0000-000000000020,Repair,2026-10-21,Repair Track Damage (Major): replace two track links,In-house workshop - Suresh,0,,In Progress
+50000000-0000-0000-0000-000000000013,30000000-0000-0000-0000-000000000009,Repair,2026-10-23,Repair Broken Part (Moderate): control panel cover and gauge glass,,0,,Scheduled
+50000000-0000-0000-0000-000000000014,30000000-0000-0000-0000-000000000014,Inspection,2026-10-18,Electrical safety inspection,ESAB Service Chennai,0,,Scheduled
+50000000-0000-0000-0000-000000000015,30000000-0000-0000-0000-000000000018,Corrective,2026-10-28,Check impeller and bearings,Kirloskar Authorised Service,0,,Scheduled

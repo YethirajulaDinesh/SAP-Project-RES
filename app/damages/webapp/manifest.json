@@ -1,0 +1,197 @@
+{
+  "_version": "1.89.0",
+  "sap.app": {
+    "id": "ret.damage.damages",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.33.0",
+      "toolsId": "40715070-14a5-4a1e-060e-4d6f1314881b"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/damage/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "DamageRecords-manage": {
+          "semanticObject": "DamageRecords",
+          "action": "manage",
+          "title": "{{DamageRecords-manage.flpTitle}}",
+          "subTitle": "{{DamageRecords-manage.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.153.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "ret.damage.damages.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/ret-theme.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "DamageRecordsList",
+          "target": "DamageRecordsList"
+        },
+        {
+          "pattern": "DamageRecords({key}):?query:",
+          "name": "DamageRecordsObjectPage",
+          "target": "DamageRecordsObjectPage"
+        },
+        {
+          "pattern": "DamageRecords({key})/photos({key2}):?query:",
+          "name": "DamagePhotosObjectPage",
+          "target": "DamagePhotosObjectPage"
+        }
+      ],
+      "targets": {
+        "DamageRecordsList": {
+          "type": "Component",
+          "id": "DamageRecordsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/DamageRecords",
+              "variantManagement": "Page",
+              "navigation": {
+                "DamageRecords": {
+                  "detail": {
+                    "route": "DamageRecordsObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DamageRecordsObjectPage": {
+          "type": "Component",
+          "id": "DamageRecordsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/DamageRecords",
+              "navigation": {
+                "photos": {
+                  "detail": {
+                    "route": "DamagePhotosObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "photos/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "creationMode": {
+                      "name": "Inline"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DamagePhotosObjectPage": {
+          "type": "Component",
+          "id": "DamagePhotosObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/DamageRecords/photos"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.fe": {
+    "app": {
+      "enableLazyLoading": true
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "_version": "1.89.0",
+  "sap.app": {
+    "id": "ret.maintenance.inspections",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.33.0",
+      "toolsId": "93114789-64fd-a2c8-e058-425736c095c8"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/maintenance/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "ConditionLogs-manage": {
+          "semanticObject": "ConditionLogs",
+          "action": "manage",
+          "title": "{{ConditionLogs-manage.flpTitle}}",
+          "subTitle": "{{ConditionLogs-manage.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.153.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "ret.maintenance.inspections.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/ret-theme.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "ConditionLogsList",
+          "target": "ConditionLogsList"
+        },
+        {
+          "pattern": "ConditionLogs({key}):?query:",
+          "name": "ConditionLogsObjectPage",
+          "target": "ConditionLogsObjectPage"
+        },
+        {
+          "pattern": "ConditionLogs({key})/damages({key2}):?query:",
+          "name": "DamageRecordsObjectPage",
+          "target": "DamageRecordsObjectPage"
+        },
+        {
+          "pattern": "ConditionLogs({key})/damages({key2})/photos({key3}):?query:",
+          "name": "DamagePhotosObjectPage",
+          "target": "DamagePhotosObjectPage"
+        }
+      ],
+      "targets": {
+        "ConditionLogsList": {
+          "type": "Component",
+          "id": "ConditionLogsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/ConditionLogs",
+              "variantManagement": "Page",
+              "navigation": {
+                "ConditionLogs": {
+                  "detail": {
+                    "route": "ConditionLogsObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ConditionLogsObjectPage": {
+          "type": "Component",
+          "id": "ConditionLogsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ConditionLogs",
+              "navigation": {
+                "damages": {
+                  "detail": {
+                    "route": "DamageRecordsObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "damages/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "creationMode": {
+                      "name": "Inline"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DamageRecordsObjectPage": {
+          "type": "Component",
+          "id": "DamageRecordsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ConditionLogs/damages",
+              "navigation": {
+                "photos": {
+                  "detail": {
+                    "route": "DamagePhotosObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "photos/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "creationMode": {
+                      "name": "Inline"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DamagePhotosObjectPage": {
+          "type": "Component",
+          "id": "DamagePhotosObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ConditionLogs/damages/photos"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.fe": {
+    "app": {
+      "enableLazyLoading": true
+    }
+  }
+}

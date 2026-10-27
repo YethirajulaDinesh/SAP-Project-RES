@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#1F2A37">
+    <title>Yard App</title>
+    <link rel="stylesheet" href="/theme/ret-theme.css">
+    <link rel="stylesheet" href="yard.css">
+</head>
+
+<body>
+    <header class="top">
+        <div class="brand">📱 Yard App</div>
+        <button id="syncBtn" class="sync" type="button" title="Send saved inspections">
+            <span id="netDot" class="dot"></span><span id="syncText">Online</span>
+        </button>
+    </header>
+
+    <main>
+        <!-- 1. Find the equipment -->
+        <section id="viewScan" class="view">
+            <h2>Find equipment</h2>
+            <form id="scanForm" class="row">
+                <input id="code" placeholder="Serial number, e.g. JCB3DX-24-0012" autocomplete="off" required>
+                <button class="primary" type="submit">Find</button>
+            </form>
+            <button id="cameraBtn" class="ghost wide" type="button">📷 Scan barcode / QR with the camera</button>
+            <video id="video" playsinline muted hidden></video>
+            <h3>Or pick from the list</h3>
+            <input id="filter" placeholder="Filter by name, type or location">
+            <ul id="eqList" class="list"></ul>
+        </section>
+
+        <!-- 2. Equipment card -->
+        <section id="viewAsset" class="view" hidden>
+            <button class="back" type="button" data-go="viewScan">← Back</button>
+            <div class="card" id="assetCard"></div>
+            <div class="actions">
+                <button class="primary wide" type="button" id="startInspection">🔍 Start inspection</button>
+                <button class="ghost wide" type="button" id="startTransfer">🚚 Transfer to another location</button>
+            </div>
+            <form id="transferForm" class="card" hidden>
+                <label>New location<select id="toLocation" required></select></label>
+                <label>Reason<input id="transferReason" placeholder="Why is it moved?"></label>
+                <button class="primary wide" type="submit">Transfer</button>
+            </form>
+        </section>
+
+        <!-- 3. Inspection wizard -->
+        <section id="viewInspect" class="view" hidden>
+            <button class="back" type="button" data-go="viewAsset">← Back</button>
+            <h2 id="inspTitle">Inspection</h2>
+            <form id="inspForm">
+                <fieldset>
+                    <legend>Inspection type</legend>
+                    <div class="seg" id="typeSeg"></div>
+                    <p class="hint" id="rentalHint"></p>
+                </fieldset>
+                <fieldset>
+                    <legend>Condition grade</legend>
+                    <div class="grades" id="gradeSeg"></div>
+                    <p class="hint">A = as new · B = normal wear · C = needs attention · D = unfit for use</p>
+                </fieldset>
+                <fieldset>
+                    <legend>Readings</legend>
+                    <label>Meter reading (hours)<input id="meter" type="number" min="0" step="0.1" inputmode="decimal"></label>
+                    <label>Notes<textarea id="notes" rows="2" maxlength="500"></textarea></label>
+                </fieldset>
+                <fieldset>
+                    <legend>Damages</legend>
+                    <div id="damageList"></div>
+                    <button class="ghost wide" type="button" id="addDamage">＋ Add damage</button>
+                </fieldset>
+                <button class="primary wide big" type="submit">Save inspection</button>
+            </form>
+        </section>
+
+        <!-- 4. Done -->
+        <section id="viewDone" class="view" hidden>
+            <div class="card done">
+                <div class="big-icon">✅</div>
+                <h2 id="doneTitle">Inspection saved</h2>
+                <p id="doneText"></p>
+                <button class="primary wide" type="button" data-go="viewScan">Next equipment</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <template id="damageTpl">
+        <div class="damage card">
+            <div class="row">
+                <select class="dType" required></select>
+                <select class="dSev" required></select>
+            </div>
+            <input class="dDesc" placeholder="What is damaged?" maxlength="500">
+            <label class="photoBtn">📷 Add photos<input class="dPhotos" type="file" accept="image/*" capture="environment" multiple hidden></label>
+            <div class="thumbs"></div>
+            <button class="remove" type="button">Remove damage</button>
+        </div>
+    </template>
+
+    <script src="yard.js"></script>
+    <script src="/shared/session-bar.js"></script>
+</body>
+
+</html>

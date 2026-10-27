@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rental Equipment Tracker</title>
+    <link rel="stylesheet" href="/theme/ret-theme.css">
+    <style>
+        .hero {
+            background: linear-gradient(135deg, #1F2A37, #2E3B4E);
+            color: #fff;
+            padding: 52px 24px 40px;
+            text-align: center;
+            border-bottom: 4px solid var(--amber)
+        }
+
+        .hero .logo {
+            font-size: 50px
+        }
+
+        .hero h1 {
+            color: var(--amber);
+            margin: 8px 0 6px;
+            font-size: 34px;
+            letter-spacing: .3px
+        }
+
+        .hero p {
+            margin: 0;
+            color: #cfd6e0
+        }
+
+        .who {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #aab4c3
+        }
+
+        .who .chip {
+            margin-left: 6px
+        }
+
+        .wrap {
+            max-width: 1080px;
+            margin: 0 auto 40px;
+            padding: 6px 20px 0
+        }
+
+        h2 {
+            color: var(--slate);
+            margin: 30px 0 12px;
+            font-size: 18px
+        }
+
+        .tiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 16px
+        }
+
+        a.tile {
+            display: block;
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 20px 18px;
+            text-decoration: none;
+            color: var(--slate);
+            box-shadow: 0 2px 12px rgba(31, 42, 55, .09);
+            border-top: 4px solid var(--amber);
+            transition: transform .15s
+        }
+
+        a.tile:hover,
+        a.tile:focus-visible {
+            transform: translateY(-4px)
+        }
+
+        a.tile .i {
+            font-size: 28px
+        }
+
+        a.tile b {
+            display: block;
+            margin-top: 8px;
+            font-size: 16px
+        }
+
+        a.tile small {
+            color: var(--muted)
+        }
+
+        a.tile.big {
+            background: var(--slate);
+            color: #fff
+        }
+
+        a.tile.big small {
+            color: #aab4c3
+        }
+
+        .note {
+            background: var(--surface);
+            border-left: 4px solid var(--amber);
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-top: 24px
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--slate);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero">
+        <div class="logo">🚜</div>
+        <h1>Rental Equipment Tracker</h1>
+        <p>Track every asset, log its condition and bill repairs automatically</p>
+        <div class="who" id="who">Checking your access…</div>
+    </div>
+    <div class="wrap" id="app"></div>
+
+    <script>
+        // Tiles per area; "roles" lists the business roles that work with the app (FRD Security & Authorization)
+        const ALL = ['YardWorker', 'Dispatcher', 'Technician', 'BillingClerk', 'Manager', 'Admin', 'Auditor'];
+        const AREAS = [
+            {
+                title: 'Overview', apps: [
+                    { i: '📊', t: 'Management Dashboard', s: 'Fleet KPIs, utilization, billing leakage', u: '/dashboard/index.html', big: true, roles: ['Dispatcher', 'BillingClerk', 'Manager', 'Admin', 'Auditor'] },
+                    { i: '📱', t: 'Yard App', s: 'Scan, inspect, photograph, transfer', u: '/yard/index.html', big: true, roles: ['YardWorker', 'Dispatcher', 'Technician', 'Manager', 'Admin'] }
+                ]
+            },
+            {
+                title: 'Rentals and fleet', apps: [
+                    { i: '📝', t: 'Rentals', s: 'Book, check out, return, close', u: '/rentals/webapp/index.html', roles: ALL },
+                    { i: '🏗️', t: 'Fleet & Asset Detail', s: 'Status, location, history', u: '/equipment/webapp/index.html', roles: ALL },
+                    { i: '🏢', t: 'Customers', s: 'Customer master data', u: '/customers/webapp/index.html', roles: ALL },
+                    { i: '📍', t: 'Locations', s: 'Yards, depots, workshops', u: '/locations/webapp/index.html', roles: ALL }
+                ]
+            },
+            {
+                title: 'Inspections and workshop', apps: [
+                    { i: '🔍', t: 'Inspections', s: 'Check-out and return condition logs', u: '/inspections/webapp/index.html', roles: ALL },
+                    { i: '🛠️', t: 'Maintenance Planner', s: 'Repair jobs, upcoming and overdue service', u: '/maintenance/webapp/index.html', roles: ['Dispatcher', 'Technician', 'Manager', 'Admin', 'Auditor'] }
+                ]
+            },
+            {
+                title: 'Damage and billing', apps: [
+                    { i: '📸', t: 'Damage Review', s: 'Photo evidence, confirm, waive', u: '/damages/webapp/index.html', roles: ALL },
+                    { i: '💰', t: 'Damage Charge Approval', s: 'Approve, adjust, reject, dispute', u: '/repairbills/webapp/index.html', roles: ['BillingClerk', 'Manager', 'Admin', 'Auditor'] }
+                ]
+            },
+            {
+                title: 'Configuration and administration', apps: [
+                    { i: '📚', t: 'Damage Catalogue', s: 'Damage types and standard charges', u: '/catalogue/webapp/index.html', roles: ['Manager', 'Admin', 'Auditor'] },
+                    { i: '⚙️', t: 'Pricing & Approval Rules', s: 'Tax, approval limit, photo rules', u: '/settings/webapp/index.html', roles: ['Manager', 'Admin', 'Auditor'] },
+                    { i: '🔗', t: 'Integration Monitor', s: 'S/4HANA postings, errors, retry', u: '/integration/webapp/index.html', roles: ['BillingClerk', 'Manager', 'Admin', 'Auditor'] },
+                    { i: '📜', t: 'Audit Log', s: 'Who did what, and when', u: '/auditlog/webapp/index.html', roles: ['Manager', 'Admin', 'Auditor'] }
+                ]
+            }
+        ];
+        const LABEL = { YardWorker: 'Yard Worker', BillingClerk: 'Billing Clerk' };
+
+        function tile(a) {
+            const el = document.createElement('a');
+            el.className = 'tile' + (a.big ? ' big' : '');
+            el.href = a.u;
+            const i = document.createElement('div'); i.className = 'i'; i.textContent = a.i;
+            const b = document.createElement('b'); b.textContent = a.t;
+            const s = document.createElement('small'); s.textContent = a.s;
+            el.append(i, b, s);
+            return el;
+        }
+
+        (async () => {
+            const app = document.getElementById('app'), who = document.getElementById('who');
+            try {
+                const r = await fetch('/odata/v4/session/me()', { headers: { Accept: 'application/json' } });
+                if (!r.ok) throw new Error('not signed in');
+                const me = await r.json();
+                who.textContent = 'Signed in as ' + me.id;
+                me.roles.forEach(role => {
+                    const c = document.createElement('span'); c.className = 'chip'; c.textContent = LABEL[role] || role; who.appendChild(c);
+                });
+                for (const area of AREAS) {
+                    const apps = area.apps.filter(a => a.roles.some(role => me.roles.includes(role)));
+                    if (!apps.length) continue;
+                    const h = document.createElement('h2'); h.textContent = area.title;
+                    const grid = document.createElement('div'); grid.className = 'tiles';
+                    apps.forEach(a => grid.appendChild(tile(a)));
+                    app.append(h, grid);
+                }
+                if (!app.children.length) {
+                    app.innerHTML = '<div class="note">Your account has no role for this application yet. Please ask an administrator to assign one of the RET_* role collections.</div>';
+                }
+            } catch (e) {
+                who.textContent = '';
+                app.innerHTML = '<div class="note">Please sign in to continue.<br><br><a class="btn" href="/switch/index.html">Sign in</a></div>';
+            }
+        })();
+    </script>
+    <script src="/shared/session-bar.js"></script>
+</body>
+
+</html>

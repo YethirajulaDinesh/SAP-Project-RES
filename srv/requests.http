@@ -1,0 +1,144 @@
+@host = http://localhost:4004
+@yard = Basic yard@rental.com:yard
+@dispatch = Basic dispatch@rental.com:dispatch
+@tech = Basic tech@rental.com:tech
+@billing = Basic billing@rental.com:billing
+@manager = Basic manager@rental.com:manager
+@admin = Basic admin@rental.com:admin
+@auditor = Basic auditor@rental.com:auditor
+@customer = 20000000-0000-0000-0000-000000000004
+@equipment = 30000000-0000-0000-0000-000000000004
+
+############ A. WHO AM I (7 roles) ############
+
+### 1. Session: roles of the current user
+GET {{host}}/odata/v4/session/me()
+Authorization: {{billing}}
+
+### 2. Yard worker sees no prices (rentalRatePerDay is null)
+GET {{host}}/odata/v4/rental/Equipment?$top=3&$select=equipmentName,rentalRatePerDay,currentStatus
+Authorization: {{yard}}
+
+### 3. Auditor cannot change data (403)
+POST {{host}}/odata/v4/rental/Customers
+Authorization: {{auditor}}
+Content-Type: application/json
+
+{ "companyName": "Not allowed" }
+
+############ B. DISPATCHER BOOKS A RENTAL ############
+
+### 4. Create the rental (draft)
+# @name rental
+POST {{host}}/odata/v4/rental/Rentals
+Authorization: {{dispatch}}
+Content-Type: application/json
+
+{ "customer_ID": "{{customer}}", "rentalDate": "2026-12-01", "expectedReturnDate": "2026-12-05" }
+
+### 5. Add an equipment item (rate is taken from the equipment)
+POST {{host}}/odata/v4/rental/Rentals(ID={{rental.response.body.$.ID}},IsActiveEntity=false)/items
+Authorization: {{dispatch}}
+Content-Type: application/json
+
+{ "equipment_ID": "{{equipment}}" }
+
+### 6. Save (activate) the rental: status Booked, total calculated
+POST {{host}}/odata/v4/rental/Rentals(ID={{rental.response.body.$.ID}},IsActiveEntity=false)/RentalManagementService.draftActivate
+Authorization: {{dispatch}}
+Content-Type: application/json
+
+{}
+
+############ C. YARD WORKER: CHECK-OUT INSPECTION (mobile REST API) ############
+
+### 7. Scan the equipment
+GET {{host}}/rest/mobile/scanEquipment(code='GDJ300E-24-0077')
+Authorization: {{yard}}
+
+### 8. Check-out inspection
+POST {{host}}/rest/mobile/submitInspection
+Authorization: {{yard}}
+Content-Type: application/json
+
+{ "clientRef": "tablet-1:demo-out", "equipmentID": "{{equipment}}", "rentalID": "{{rental.response.body.$.ID}}",
+  "inspectionType": "Check-Out", "conditionGrade": "A", "meterReading": 120, "notes": "Clean" }
+
+### 9. Dispatcher checks the rental out
+POST {{host}}/odata/v4/rental/Rentals(ID={{rental.response.body.$.ID}},IsActiveEntity=true)/RentalManagementService.checkOut
+Authorization: {{dispatch}}
+Content-Type: application/json
+
+{}
+
+### 10. Return two days late (late days are charged)
+POST {{host}}/odata/v4/rental/Rentals(ID={{rental.response.body.$.ID}},IsActiveEntity=true)/RentalManagementService.returnRental
+Authorization: {{dispatch}}
+Content-Type: application/json
+
+{ "actualReturnDate": "2026-12-07" }
+
+### 11. Return inspection with a damage
+# @name checkin
+POST {{host}}/rest/mobile/submitInspection
+Authorization: {{yard}}
+Content-Type: application/json
+
+{ "clientRef": "tablet-1:demo-in", "equipmentID": "{{equipment}}", "rentalID": "{{rental.response.body.$.ID}}",
+  "inspectionType": "Check-In", "conditionGrade": "C", "meterReading": 160,
+  "damages": [ { "damageType": "Broken Part", "severity": "Major", "damageDescription": "Left fork bent" } ] }
+
+### 12. Photo evidence (base64 PNG, SHA-256 is checked)
+POST {{host}}/rest/mobile/uploadPhoto
+Authorization: {{yard}}
+Content-Type: application/json
+
+{ "damageID": "{{checkin.response.body.$.damageIDs[0]}}", "fileName": "fork.png", "mediaType": "image/png",
+  "content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  "sha256": "c414cd0e204de974f73753c7e28d7638e7b3691bb8b1a2bab6b25bb7fed7ce77" }
+
+############ D. TECHNICIAN CONFIRMS, BILLING CLERK DECIDES ############
+
+### 13. Confirm the damage: repair job + maintenance notification + repair bill
+POST {{host}}/odata/v4/damage/DamageRecords(ID={{checkin.response.body.$.damageIDs[0]}},IsActiveEntity=true)/DamageManagementService.confirmDamage
+Authorization: {{tech}}
+Content-Type: application/json
+
+{}
+
+### 14. Charges waiting for approval
+# @name bills
+GET {{host}}/odata/v4/damage/RepairBills?$filter=billingStatus eq 'Pending Approval'&$orderby=createdAt desc
+Authorization: {{billing}}
+
+### 15. Approve (queues the S/4HANA debit memo request in the outbox)
+POST {{host}}/odata/v4/damage/RepairBills({{bills.response.body.$.value[0].ID}})/DamageManagementService.approveCharge
+Authorization: {{billing}}
+Content-Type: application/json
+
+{ "remarks": "Photos confirm new damage" }
+
+### 16. Run the outbox worker now (otherwise it runs every minute)
+POST {{host}}/odata/v4/admin/processOutbox
+Authorization: {{admin}}
+Content-Type: application/json
+
+{}
+
+### 17. Integration Monitor
+GET {{host}}/odata/v4/admin/OutboxMessages?$orderby=createdAt desc
+Authorization: {{admin}}
+
+############ E. DASHBOARD ############
+
+### 18. Fleet KPIs
+GET {{host}}/odata/v4/analytics/getFleetKPIs()
+Authorization: {{manager}}
+
+### 19. Billing leakage and damage revenue
+GET {{host}}/odata/v4/analytics/getBillingSummary()
+Authorization: {{manager}}
+
+### 20. Maintenance cost by equipment
+GET {{host}}/odata/v4/analytics/getMaintenanceCostByEquipment()
+Authorization: {{auditor}}

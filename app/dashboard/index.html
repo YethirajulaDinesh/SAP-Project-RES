@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Management Dashboard</title>
+    <link rel="stylesheet" href="/theme/ret-theme.css">
+    <style>
+        .viz-root {
+            color-scheme: light;
+            --surface-1: #fcfcfb;
+            --grid: #e6e6e3;
+            --text-primary: #0b0b0b;
+            --text-secondary: #52514e;
+            --series-1: #2a78d6;
+            --series-2: #eb6834;
+            --page: #F4F5F7;
+            background: var(--page);
+            color: var(--text-primary);
+            min-height: 100vh
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:where(:not([data-theme="light"])) .viz-root {
+                color-scheme: dark;
+                --surface-1: #1a1a19;
+                --grid: #2e2e2c;
+                --text-primary: #f0efec;
+                --text-secondary: #c3c2b7;
+                --series-1: #3987e5;
+                --series-2: #d95926;
+                --page: #111110;
+            }
+        }
+
+        :root[data-theme="dark"] .viz-root {
+            color-scheme: dark;
+            --surface-1: #1a1a19;
+            --grid: #2e2e2c;
+            --text-primary: #f0efec;
+            --text-secondary: #c3c2b7;
+            --series-1: #3987e5;
+            --series-2: #d95926;
+            --page: #111110;
+        }
+
+        header {
+            background: var(--slate);
+            color: #fff;
+            padding: 14px 32px;
+            border-bottom: 3px solid var(--amber);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--amber)
+        }
+
+        header nav a {
+            color: #cfd6e0;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 14px
+        }
+
+        header nav a:hover {
+            color: #fff
+        }
+
+        main {
+            padding: 24px 32px 40px;
+            max-width: 1320px;
+            margin: 0 auto
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 18px;
+            color: var(--text-secondary);
+            font-size: 14px
+        }
+
+        .filters select {
+            font: inherit;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--grid);
+            background: var(--surface-1);
+            color: var(--text-primary)
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px
+        }
+
+        .kpi {
+            background: var(--surface-1);
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .06)
+        }
+
+        .kpi .label {
+            font-size: 13px;
+            color: var(--text-secondary)
+        }
+
+        .kpi .value {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 4px
+        }
+
+        .kpi .sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px
+        }
+
+        .kpi .flag::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            background: var(--dot, transparent)
+        }
+
+        .kpi.hero {
+            grid-column: span 2
+        }
+
+        .kpi.hero .value {
+            font-size: 48px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 16px
+        }
+
+        .card {
+            background: var(--surface-1);
+            border-radius: 12px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+            min-width: 0
+        }
+
+        .card h3 {
+            margin: 0 0 2px;
+            font-size: 15px
+        }
+
+        .card .note {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 10px
+        }
+
+        svg text {
+            fill: var(--text-secondary);
+            font-size: 12px
+        }
+
+        svg text.val {
+            fill: var(--text-primary);
+            font-weight: 600
+        }
+
+        svg .bar {
+            cursor: default;
+            outline: none
+        }
+
+        svg .bar:hover path,
+        svg .bar:focus path {
+            opacity: .8
+        }
+
+        details {
+            margin-top: 8px;
+            font-size: 13px
+        }
+
+        details summary {
+            cursor: pointer;
+            color: var(--text-secondary)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 7px 8px;
+            border-bottom: 1px solid var(--grid)
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 600
+        }
+
+        td.num,
+        th.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums
+        }
+
+        .status::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+            background: var(--dot)
+        }
+
+        .empty {
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding: 12px 0
+        }
+
+        #tip {
+            position: fixed;
+            pointer-events: none;
+            background: var(--surface-1);
+            color: var(--text-primary);
+            border: 1px solid var(--grid);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 13px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .15);
+            display: none;
+            z-index: 10
+        }
+
+        #tip b {
+            display: block;
+            font-size: 15px
+        }
+
+        .err {
+            background: #fde8e8;
+            color: #7a1c1c;
+            padding: 14px 18px;
+            border-radius: 10px
+        }
+
+        @media (max-width: 520px) {
+            main {
+                padding: 16px
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .kpi.hero {
+                grid-column: span 1
+            }
+        }
+    </style>
+</head>
+
+<body class="viz-root">
+    <header>
+        <h1>📊 Management Dashboard</h1>
+        <nav>
+            <a href="/landing/index.html">Home</a>
+            <a href="/equipment/webapp/index.html">Fleet</a>
+            <a href="/repairbills/webapp/index.html">Charges</a>
+            <a href="/integration/webapp/index.html">Integration</a>
+        </nav>
+    </header>
+    <main id="main">
+        <div class="filters">
+            <label for="period">Period</label>
+            <select id="period">
+                <option value="3">Last 3 months</option>
+                <option value="6" selected>Last 6 months</option>
+                <option value="12">Last 12 months</option>
+            </select>
+        </div>
+        <section class="kpis" id="kpis" aria-label="Key figures"></section>
+        <section class="grid">
+            <div class="card">
+                <h3>Equipment by status</h3>
+                <div class="note">Number of assets in each state right now</div>
+                <div id="status"></div>
+            </div>
+            <div class="card">
+                <h3>Utilization by equipment type</h3>
+                <div class="note">Rented days ÷ available days in the period</div>
+                <div id="util"></div>
+            </div>
+            <div class="card">
+                <h3>Rental revenue by month</h3>
+                <div class="note">Booked rental amount, by rental start month (INR)</div>
+                <div id="trend"></div>
+            </div>
+            <div class="card">
+                <h3>Maintenance cost by month</h3>
+                <div class="note">Completed maintenance and repair jobs (INR)</div>
+                <div id="mcost"></div>
+            </div>
+            <div class="card">
+                <h3>Damage revenue: estimated vs charged</h3>
+                <div class="note" id="leakNote">Customer-liable damages and their repair bills (INR, net of GST)</div>
+                <div id="billing"></div>
+            </div>
+            <div class="card">
+                <h3>Top damage categories</h3>
+                <div class="note">Damage records by type</div>
+                <div id="damage"></div>
+            </div>
+            <div class="card">
+                <h3>Repair charges by billing status</h3>
+                <div class="note">Damage Charge Approval worklist</div>
+                <div id="charges"></div>
+            </div>
+            <div class="card">
+                <h3>Overdue rentals</h3>
+                <div class="note">Checked out and past the expected return date</div>
+                <div id="overdue"></div>
+            </div>
+            <div class="card">
+                <h3>Service schedule (next 30 days and overdue)</h3>
+                <div class="note">Maintenance Planner</div>
+                <div id="service"></div>
+            </div>
+            <div class="card">
+                <h3>Maintenance cost by equipment</h3>
+                <div class="note">All completed jobs, highest first</div>
+                <div id="byEquipment"></div>
+            </div>
+        </section>
+    </main>
+    <div id="tip" role="status"></div>
+
+    <script>
+        const API = '/odata/v4/analytics/';
+        const STATUS = { good: '#0ca30c', warning: '#fab219', serious: '#ec835a', critical: '#d03b3b', neutral: '#9a9a95' };
+        const BILL_STATUS = { 'Pending Approval': 'warning', 'Approved': 'good', 'Posted': 'good', 'Billed': 'good', 'Disputed': 'critical', 'Rejected': 'neutral' };
+        const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+        const compact = new Intl.NumberFormat('en-IN', { notation: 'compact', maximumFractionDigits: 1 });
+        const num = v => Number(v) || 0;
+        const css = name => getComputedStyle(document.body).getPropertyValue(name).trim();
+        const el = (tag, attrs = {}, text) => {
+            const e = document.createElementNS(['svg', 'g', 'path', 'line', 'text', 'rect'].includes(tag) ? 'http://www.w3.org/2000/svg' : 'http://www.w3.org/1999/xhtml', tag);
+            for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+            if (text !== undefined) e.textContent = text;
+            return e;
+        };
+
+        async function get(fn) {
+            const r = await fetch(API + fn, { headers: { Accept: 'application/json' } });
+            if (!r.ok) throw new Error(r.status === 403 ? 'Your role cannot open the dashboard.' : r.status === 401 ? 'Please sign in.' : 'Could not load ' + fn);
+            const body = await r.json();
+            return body.value !== undefined ? body.value : body;
+        }
+
+        // ---- tooltip (enhances; every value is also in the table view) ----
+        const tip = document.getElementById('tip');
+        function showTip(evt, value, label) {
+            tip.textContent = '';
+            tip.append(el('b', {}, value), document.createTextNode(label));
+            const r = evt.target.getBoundingClientRect ? evt.target.getBoundingClientRect() : { left: evt.clientX, top: evt.clientY };
+            tip.style.left = Math.min((evt.clientX || r.left) + 12, innerWidth - 220) + 'px';
+            tip.style.top = ((evt.clientY || r.top) - 44) + 'px';
+            tip.style.display = 'block';
+        }
+        const hideTip = () => { tip.style.display = 'none'; };
+
+        // bar with a 4px rounded data-end and a square baseline
+        function barPath(x, y, w, h, horizontal) {
+            const r = Math.min(4, horizontal ? w : h, horizontal ? h / 2 : w / 2);
+            if (w <= 0 || h <= 0) return '';
+            return horizontal
+                ? `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`
+                : `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
+        }
+
+        function tableView(rows, head) {
+            const d = el('details'); d.append(el('summary', {}, 'Show table'));
+            const t = el('table'), tr = el('tr');
+            head.forEach((h, i) => tr.append(el('th', i ? { class: 'num' } : {}, h)));
+            t.append(tr);
+            rows.forEach(r => { const row = el('tr'); r.forEach((c, i) => row.append(el('td', i ? { class: 'num' } : {}, c))); t.append(row); });
+            d.append(t);
+            return d;
+        }
+
+        // Horizontal bars: one series, value at the tip
+        function hbars(host, rows, color, fmt = String) {
+            host.textContent = '';
+            if (!rows.length) { host.append(el('div', { class: 'empty' }, 'No data for this period.')); return; }
+            const width = Math.max(host.clientWidth, 300), labelW = 150, valueW = 70, band = 30, bar = 18;
+            const height = rows.length * band + 4, max = Math.max(...rows.map(r => r.value), 1);
+            const svg = el('svg', { width: '100%', viewBox: `0 0 ${width} ${height}`, role: 'img' });
+            svg.append(el('line', { x1: labelW, x2: labelW, y1: 0, y2: height, stroke: css('--grid') }));
+            rows.forEach((r, i) => {
+                const y = i * band + (band - bar) / 2, w = (width - labelW - valueW) * r.value / max;
+                svg.append(el('text', { x: labelW - 8, y: y + bar / 2 + 4, 'text-anchor': 'end' }, r.label));
+                const g = el('g', { class: 'bar', tabindex: 0, 'aria-label': `${r.label}: ${fmt(r.value)}` });
+                g.append(el('rect', { x: labelW, y: i * band, width: width - labelW, height: band, fill: 'transparent' }));
+                g.append(el('path', { d: barPath(labelW, y, Math.max(w, r.value ? 2 : 0), bar, true), fill: color }));
+                g.addEventListener('pointermove', e => showTip(e, fmt(r.value), r.label));
+                g.addEventListener('focus', e => showTip(e, fmt(r.value), r.label));
+                g.addEventListener('pointerleave', hideTip); g.addEventListener('blur', hideTip);
+                svg.append(g);
+                svg.append(el('text', { x: labelW + w + 6, y: y + bar / 2 + 4, class: 'val' }, fmt(r.value)));
+            });
+            host.append(svg, tableView(rows.map(r => [r.label, fmt(r.value)]), ['', 'Value']));
+        }
+
+        // Columns: one series, labelled extreme, compact y-axis ticks
+        function columns(host, rows, color, fmt = String) {
+            host.textContent = '';
+            if (!rows.length) { host.append(el('div', { class: 'empty' }, 'No data for this period.')); return; }
+            const width = Math.max(host.clientWidth, 300), height = 200, left = 44, bottom = 24, top = 18;
+            const max = Math.max(...rows.map(r => r.value), 1);
+            const step = Math.pow(10, Math.floor(Math.log10(max))), niceMax = Math.ceil(max / step) * step;
+            const plotH = height - bottom - top, bandW = (width - left) / rows.length, bar = Math.min(24, bandW * 0.6);
+            const svg = el('svg', { width: '100%', viewBox: `0 0 ${width} ${height}`, role: 'img' });
+            for (let t = 0; t <= 4; t++) {
+                const v = niceMax * t / 4, y = top + plotH - plotH * t / 4;
+                svg.append(el('line', { x1: left, x2: width, y1: y, y2: y, stroke: css('--grid') }));
+                svg.append(el('text', { x: left - 6, y: y + 4, 'text-anchor': 'end' }, compact.format(v)));
+            }
+            const peak = rows.reduce((m, r, i) => (r.value > rows[m].value ? i : m), 0);
+            rows.forEach((r, i) => {
+                const h = plotH * r.value / niceMax, x = left + i * bandW + (bandW - bar) / 2, y = top + plotH - h;
+                const g = el('g', { class: 'bar', tabindex: 0, 'aria-label': `${r.label}: ${fmt(r.value)}` });
+                g.append(el('rect', { x: left + i * bandW, y: top, width: bandW, height: plotH, fill: 'transparent' }));
+                g.append(el('path', { d: barPath(x, y, bar, h, false), fill: color }));
+                g.addEventListener('pointermove', e => showTip(e, fmt(r.value), r.label));
+                g.addEventListener('focus', e => showTip(e, fmt(r.value), r.label));
+                g.addEventListener('pointerleave', hideTip); g.addEventListener('blur', hideTip);
+                svg.append(g);
+                svg.append(el('text', { x: left + i * bandW + bandW / 2, y: height - 6, 'text-anchor': 'middle' }, r.label));
+                if (i === peak) svg.append(el('text', { x: x + bar / 2, y: y - 5, 'text-anchor': 'middle', class: 'val' }, compact.format(r.value)));
+            });
+            host.append(svg, tableView(rows.map(r => [r.label, fmt(r.value)]), ['Month', 'Value']));
+        }
+
+        function table(host, head, rows, numeric = []) {
+            host.textContent = '';
+            if (!rows.length) { host.append(el('div', { class: 'empty' }, 'Nothing to show.')); return; }
+            const t = el('table'), tr = el('tr');
+            head.forEach((h, i) => tr.append(el('th', numeric.includes(i) ? { class: 'num' } : {}, h)));
+            t.append(tr);
+            rows.forEach(r => {
+                const row = el('tr');
+                r.forEach((c, i) => {
+                    const td = el('td', numeric.includes(i) ? { class: 'num' } : {});
+                    if (c && typeof c === 'object') { td.className = 'status'; td.style.setProperty('--dot', STATUS[c.tone]); td.textContent = c.text; }
+                    else td.textContent = c ?? '';
+                    row.append(td);
+                });
+                t.append(row);
+            });
+            host.append(t);
+        }
+
+        function kpi(label, value, sub, tone, hero) {
+            const k = el('div', { class: 'kpi' + (hero ? ' hero' : '') });
+            const l = el('div', { class: 'label' + (tone ? ' flag' : '') }, label);
+            if (tone) l.style.setProperty('--dot', STATUS[tone]);
+            k.append(l, el('div', { class: 'value' }, value));
+            if (sub) k.append(el('div', { class: 'sub' }, sub));
+            return k;
+        }
+
+        const month = p => new Date(p + '-01T00:00:00Z').toLocaleString('en-IN', { month: 'short', year: '2-digit', timeZone: 'UTC' });
+
+        async function load() {
+            const months = Number(document.getElementById('period').value);
+            document.getElementById('main').style.opacity = .6;
+            try {
+                const [k, status, util, trend, mcost, bill, charges, damage, overdue, service, byEq] = await Promise.all([
+                    get('getFleetKPIs()'), get('getEquipmentStatusDistribution()'), get(`getUtilization(days=${months * 30})`),
+                    get(`getRentalTrend(months=${months})`), get(`getMaintenanceCosts(months=${months})`), get('getBillingSummary()'),
+                    get('getChargesByStatus()'), get('getTopDamageCategories(top=6)'), get('getOverdueRentals()'),
+                    get('getServiceSchedule(days=30)'), get('getMaintenanceCostByEquipment()')
+                ]);
+
+                const kpis = document.getElementById('kpis'); kpis.textContent = '';
+                kpis.append(
+                    kpi('Fleet utilization (90 days)', num(k.utilizationPct).toFixed(1) + '%', `${k.totalEquipment} assets, ${k.openRentals} open rentals`, null, true),
+                    kpi('Available', k.available, 'ready to rent', 'good'),
+                    kpi('Rented out', k.rentedOut, 'with customers'),
+                    kpi('Overdue', k.overdue, 'rentals past return date', k.overdue ? 'critical' : 'good'),
+                    kpi('Damaged', k.damaged, 'damaged or under inspection', k.damaged ? 'serious' : 'good'),
+                    kpi('In maintenance', k.inMaintenance + k.quarantined, `${k.quarantined} quarantined`, 'warning'),
+                    kpi('Inspection compliance', num(k.inspectionCompliancePct).toFixed(0) + '%', 'returns with check-in inspection', num(k.inspectionCompliancePct) >= 95 ? 'good' : 'warning'),
+                    kpi('Pending charges', inr.format(num(k.pendingChargeAmount)), `${k.pendingCharges} awaiting approval`, k.pendingCharges ? 'warning' : 'good')
+                );
+
+                hbars(document.getElementById('status'), status.map(s => ({ label: s.status, value: s.count })), css('--series-1'));
+                hbars(document.getElementById('util'), util.map(u => ({ label: u.equipmentType, value: num(u.utilizationPct) })), css('--series-1'), v => v.toFixed(1) + '%');
+                columns(document.getElementById('trend'), trend.map(t => ({ label: month(t.period), value: num(t.revenue) })), css('--series-1'), v => inr.format(v));
+                const byMonth = {};
+                mcost.forEach(c => { byMonth[c.period] = (byMonth[c.period] || 0) + num(c.cost); });
+                columns(document.getElementById('mcost'), Object.keys(byMonth).sort().map(p => ({ label: month(p), value: byMonth[p] })), css('--series-2'), v => inr.format(v));
+
+                hbars(document.getElementById('billing'), [
+                    { label: 'Estimated (liable)', value: num(bill.estimatedTotal) },
+                    { label: 'Charged', value: num(bill.chargedTotal) },
+                    { label: 'Posted to S/4HANA', value: num(bill.postedTotal) },
+                    { label: 'Disputed', value: num(bill.disputedTotal) }
+                ], css('--series-1'), v => inr.format(v));
+                document.getElementById('leakNote').textContent = 'Net of GST · ' + (bill.leakageCount
+                    ? `Billing leakage: ${bill.leakageCount} liable damage(s) worth ${inr.format(num(bill.leakageAmount))} have no bill yet · ${bill.autoApproved} auto-approved, ${bill.manualApproved} approved manually`
+                    : `No billing leakage · ${bill.autoApproved} auto-approved, ${bill.manualApproved} approved manually`);
+
+                table(document.getElementById('charges'), ['Status', 'Bills', 'Amount'],
+                    charges.map(c => [{ text: c.status, tone: BILL_STATUS[c.status] }, c.count, inr.format(num(c.amount))]), [1, 2]);
+                hbars(document.getElementById('damage'), damage.map(d => ({ label: d.damageType, value: d.count })), css('--series-1'));
+                table(document.getElementById('overdue'), ['Customer', 'Expected back', 'Days late', 'Items'],
+                    overdue.map(o => [o.customer, o.expectedReturnDate, { text: String(o.overdueDays), tone: 'critical' }, o.items]), [2, 3]);
+                table(document.getElementById('service'), ['Due', 'Equipment', 'Type', 'Status'],
+                    service.map(s => [s.dueDate, s.equipmentName, s.maintenanceType, { text: s.overdue ? 'Overdue' : s.status, tone: s.overdue ? 'critical' : s.status === 'In Progress' ? 'warning' : 'good' }]));
+                table(document.getElementById('byEquipment'), ['Equipment', 'Serial number', 'Jobs', 'Cost'],
+                    byEq.slice(0, 6).map(e => [e.equipmentName, e.serialNumber, e.jobs, inr.format(num(e.cost))]), [2, 3]);
+            } catch (e) {
+                document.getElementById('main').innerHTML = '';
+                const box = el('div', { class: 'err' }, e.message + ' ');
+                box.append(el('a', { href: '/switch/index.html' }, 'Switch user'));
+                document.getElementById('main').append(box);
+            } finally {
+                document.getElementById('main').style.opacity = 1;
+            }
+        }
+
+        document.getElementById('period').addEventListener('change', load);
+        let resize; addEventListener('resize', () => { clearTimeout(resize); resize = setTimeout(load, 300); });
+        load();
+    </script>
+    <script src="/shared/session-bar.js"></script>
+</body>
+
+</html>

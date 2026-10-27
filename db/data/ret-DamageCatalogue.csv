@@ -1,0 +1,49 @@
+ID,damageType,severity,standardCost,description,active
+c0000000-0000-0000-0000-000000000001,Scratch,Minor,1500,Minor scratch - standard repair charge,true
+c0000000-0000-0000-0000-000000000002,Scratch,Moderate,3000,Moderate scratch - standard repair charge,true
+c0000000-0000-0000-0000-000000000003,Scratch,Major,6000,Major scratch - standard repair charge,true
+c0000000-0000-0000-0000-000000000004,Scratch,Critical,12000,Critical scratch - standard repair charge,true
+c0000000-0000-0000-0000-000000000005,Dent,Minor,4000,Minor dent - standard repair charge,true
+c0000000-0000-0000-0000-000000000006,Dent,Moderate,8000,Moderate dent - standard repair charge,true
+c0000000-0000-0000-0000-000000000007,Dent,Major,16000,Major dent - standard repair charge,true
+c0000000-0000-0000-0000-000000000008,Dent,Critical,32000,Critical dent - standard repair charge,true
+c0000000-0000-0000-0000-000000000009,Crack,Minor,6000,Minor crack - standard repair charge,true
+c0000000-0000-0000-0000-000000000010,Crack,Moderate,12000,Moderate crack - standard repair charge,true
+c0000000-0000-0000-0000-000000000011,Crack,Major,24000,Major crack - standard repair charge,true
+c0000000-0000-0000-0000-000000000012,Crack,Critical,48000,Critical crack - standard repair charge,true
+c0000000-0000-0000-0000-000000000013,Broken Part,Minor,7000,Minor broken part - standard repair charge,true
+c0000000-0000-0000-0000-000000000014,Broken Part,Moderate,14000,Moderate broken part - standard repair charge,true
+c0000000-0000-0000-0000-000000000015,Broken Part,Major,28000,Major broken part - standard repair charge,true
+c0000000-0000-0000-0000-000000000016,Broken Part,Critical,56000,Critical broken part - standard repair charge,true
+c0000000-0000-0000-0000-000000000017,Missing Part,Minor,5000,Minor missing part - standard repair charge,true
+c0000000-0000-0000-0000-000000000018,Missing Part,Moderate,10000,Moderate missing part - standard repair charge,true
+c0000000-0000-0000-0000-000000000019,Missing Part,Major,20000,Major missing part - standard repair charge,true
+c0000000-0000-0000-0000-000000000020,Missing Part,Critical,40000,Critical missing part - standard repair charge,true
+c0000000-0000-0000-0000-000000000021,Hydraulic Leak,Minor,15000,Minor hydraulic leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000022,Hydraulic Leak,Moderate,30000,Moderate hydraulic leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000023,Hydraulic Leak,Major,60000,Major hydraulic leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000024,Hydraulic Leak,Critical,120000,Critical hydraulic leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000025,Oil Leak,Minor,9000,Minor oil leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000026,Oil Leak,Moderate,18000,Moderate oil leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000027,Oil Leak,Major,36000,Major oil leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000028,Oil Leak,Critical,72000,Critical oil leak - standard repair charge,true
+c0000000-0000-0000-0000-000000000029,Electrical Fault,Minor,8000,Minor electrical fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000030,Electrical Fault,Moderate,16000,Moderate electrical fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000031,Electrical Fault,Major,32000,Major electrical fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000032,Electrical Fault,Critical,64000,Critical electrical fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000033,Tyre Damage,Minor,6500,Minor tyre damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000034,Tyre Damage,Moderate,13000,Moderate tyre damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000035,Tyre Damage,Major,26000,Major tyre damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000036,Tyre Damage,Critical,52000,Critical tyre damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000037,Track Damage,Minor,20000,Minor track damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000038,Track Damage,Moderate,40000,Moderate track damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000039,Track Damage,Major,80000,Major track damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000040,Track Damage,Critical,160000,Critical track damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000041,Engine Fault,Minor,30000,Minor engine fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000042,Engine Fault,Moderate,60000,Moderate engine fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000043,Engine Fault,Major,120000,Major engine fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000044,Engine Fault,Critical,240000,Critical engine fault - standard repair charge,true
+c0000000-0000-0000-0000-000000000045,Glass Damage,Minor,3500,Minor glass damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000046,Glass Damage,Moderate,7000,Moderate glass damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000047,Glass Damage,Major,14000,Major glass damage - standard repair charge,true
+c0000000-0000-0000-0000-000000000048,Glass Damage,Critical,28000,Critical glass damage - standard repair charge,true
